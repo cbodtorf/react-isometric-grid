@@ -26,6 +26,21 @@ class Cell extends Component {
       if (!layer) {
         return null;
       }
+      if(React.isValidElement(layer)) {
+        return (
+          React.cloneElement(
+            layer,
+            {
+              className: classNames([styles.grid__img, styles.layer, layer.props.className]),
+              key: uniqid(),
+              style: {
+                ...DEFAULT_LAYER_STYLE,
+                ...layerStyle,
+              },
+            }
+          )
+        )
+      }
       if (isValidColor(layer)) {
         return (
           <div
@@ -71,7 +86,7 @@ class Cell extends Component {
 
 Cell.propTypes = {
   // arry of images to be in the stack, or hex string for layer colors
-  layers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  layers: PropTypes.arrayOf(PropTypes.node).isRequired,
 
   // onclick navigation link
   href: PropTypes.string,
